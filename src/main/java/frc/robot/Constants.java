@@ -27,4 +27,25 @@ public final class Constants {
     /** Replaying from a log file. */
     REPLAY
   }
+
+  public static final class DriveConstants {
+    public static final int LEFT_MOTOR_1_ID = 3;
+    public static final int LEFT_MOTOR_2_ID = 4;
+    public static final int RIGHT_MOTOR_1_ID = 1;
+    public static final int RIGHT_MOTOR_2_ID = 2;
+
+    public static final int RIGHT_INTAKE_ID = 5;
+    public static final int LEFT_INTAKE_ID = 6;
+
+    public static final int LEFT_SERVO_PORT = 0;
+    public static final int RIGHT_SERVO_PORT = 1;
+
+    public static final double MAX_SPEED = 1.0;
+    public static final double MAX_SPEED_INTAKE = 1.0;
+  }
+
+  public static final class OIConstants {
+    public static final int DRIVER_CONTROLLER_PORT = 0;
+    public static final int OPERATOR_CONTROLLER_PORT = 1;
+  }
 }
