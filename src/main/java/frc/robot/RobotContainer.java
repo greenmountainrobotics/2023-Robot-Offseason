@@ -5,10 +5,12 @@
 
 package frc.robot;
 
-import frc.robot.commands.DriveAuto;
+import frc.robot.commands.*;
+import frc.robot.commands.auto.*;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.drive.*;
@@ -16,7 +18,8 @@ import frc.robot.subsystems.intake.*;
 import frc.robot.subsystems.imu.*;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.*;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.Constants.OIConstants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -32,8 +35,8 @@ public class RobotContainer {
   private final Imu imu;
 
   // Controller
-  private final CommandXboxController joystick = new CommandXboxController(0);
-
+  private final CommandJoystick joystick = new CommandJoystick(DRIVER_CONTROLLER_PORT);
+  private final CommandXboxController controller = new CommandXboxController(OPERATOR_CONTROLLER_PORT);
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Choices");
   private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel Speed", 1500.0);
@@ -47,7 +50,7 @@ public class RobotContainer {
       case REAL:
         drive = new Drive(new DriveIOSparkMax());
         intake = new Intake(new IntakeIOSPX());
-        imu = new imu(new ImuIOAHRS());
+        imu = new Imu(new ImuIOAHRS());
         // drive = new Drive(new DriveIOFalcon500());
         // flywheel = new Flywheel(new FlywheelIOFalcon500());
         break;
@@ -56,7 +59,7 @@ public class RobotContainer {
       case SIM:
         drive = new Drive(new DriveIOSim());
         intake = new Intake(new IntakeIOSim());
-        imu = new imu(new ImuIOSim());
+        imu = new Imu(new ImuIOSim());
         break;
 
       // Replayed robot, disable IO implementations
@@ -65,13 +68,13 @@ public class RobotContainer {
         });
         intake = new Intake(new IntakeIO() {
         });
-        imu = new imu(new ImuIO() {
+        imu = new Imu(new ImuIO() {
         });
 
         break;
     }
 
-    drive.setDefaultCommand(new ParallelCommandGroup(new JoystickDriveCommand(drive, joystick), new IntakeCommand(intake, joystick)));
+    drive.setDefaultCommand(new ParallelCommandGroup(new JoystickDriveCommand(drive, joystick), new IntakeCommand(intake, controller)));
   }
 
   /**
@@ -85,5 +88,5 @@ public class RobotContainer {
       else
           //    return new AutoScoreCommand(intaksubsystem, robotDrive);
           //return new NewBalanceCommand(imu, robotDrive, roll);
-          return new SequentialCommandGroup(new AutoScoreCommand(intaksubsystem, robotDrive), new RunCommand(() -> robotDrive.setSpeed(0.3, 0.3), robotDrive).withTimeout(3.5));  }
+          return new SequentialCommandGroup(new AutoScoreCommand(intake, drive), new RunCommand(() -> drive.drivePercent(0.3, 0.3), drive).withTimeout(3.5));  }
 }
