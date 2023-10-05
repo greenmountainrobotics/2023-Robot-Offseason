@@ -19,7 +19,7 @@ import frc.robot.subsystems.imu.*;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Constants.OIConstants.*;
+import static frc.robot.Constants.OIConstants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -37,9 +37,6 @@ public class RobotContainer {
   // Controller
   private final CommandJoystick joystick = new CommandJoystick(DRIVER_CONTROLLER_PORT);
   private final CommandXboxController controller = new CommandXboxController(OPERATOR_CONTROLLER_PORT);
-  // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Choices");
-  private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
