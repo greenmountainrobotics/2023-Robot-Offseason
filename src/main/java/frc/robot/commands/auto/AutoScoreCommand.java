@@ -2,17 +2,17 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.drive.Drive;
 import java.time.Clock;
 import static frc.robot.Constants.AutoConstants.*;
 
 public class AutoScoreCommand extends CommandBase {
-    private final IntakeSubsystem intakeSubsystem;
+    private final Intake intakeSubsystem;
     private final Drive tankDriveSubsystem;
     private long startTime;
 
-    public AutoScoreCommand(IntakeSubsystem intakeSubsystem, Drive tankDriveSubsystem) {
+    public AutoScoreCommand(Intake intakeSubsystem, Drive tankDriveSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
         this.tankDriveSubsystem = tankDriveSubsystem;
         // each subsystem used by the command must be passed into the

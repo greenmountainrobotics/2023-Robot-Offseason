@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.IMUSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.imu.Imu;
+import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.drive.Drive;
 
 public class AutoCommandGroup extends SequentialCommandGroup {
 
-    public AutoCommandGroup(IMUSubsystem imu, Drive tank, IntakeSubsystem intake, double startpoint) {
+    public AutoCommandGroup(Imu imu, Drive tank, Intake intake, double startpoint) {
         addCommands(
                 new InstantCommand(imu::reset, imu),
                 new AutoScoreCommand(intake, tank),

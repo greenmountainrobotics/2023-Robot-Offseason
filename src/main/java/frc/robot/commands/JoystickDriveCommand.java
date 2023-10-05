@@ -54,11 +54,11 @@ public class JoystickDriveCommand extends CommandBase {
         boolean forward = true; // joystick.getRawAxis(3) < 0;
 
         if (forward) {
-            robotDrive.setSpeed(
+            robotDrive.drivePercent(
                     speed.right,
                     speed.left);
         } else {
-            robotDrive.setSpeed(
+            robotDrive.drivePercent(
                     -speed.left,
                     -speed.right);
         }

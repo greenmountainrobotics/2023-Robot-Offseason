@@ -7,17 +7,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.intake.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import static frc.robot.Constants.DriveConstants.*;
 
 public class IntakeCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-    private final IntakeSubsystem intake;
+    private final Intake intake;
     private final CommandXboxController controller;
 
-    public IntakeCommand(IntakeSubsystem intake, CommandXboxController controller) {
+    public IntakeCommand(Intake intake, CommandXboxController controller) {
         this.intake = intake;
         this.controller = controller;
         addRequirements(intake);
