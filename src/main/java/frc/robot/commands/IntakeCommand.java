@@ -28,8 +28,8 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        SmartDashboard.putNumber("Max Speed Intake (dashboard)", 0.4);
-        SmartDashboard.putNumber("Max Speed Outtake (dashboard)", 0.8);
+        SmartDashboard.putNumber("Max Speed Intake (dashboard)", 0.2);
+        SmartDashboard.putNumber("Max Speed Outtake (dashboard)", 1);
 
     }
 
@@ -49,7 +49,6 @@ public class IntakeCommand extends CommandBase {
          * return ((-joystick.getRawAxis(3) + 1) / 2)
          */
         return MAX_SPEED_INTAKE
-                * 0.4
                 * SmartDashboard.getNumber("Max Speed Intake (dashboard)", 1.0);
     }
 
