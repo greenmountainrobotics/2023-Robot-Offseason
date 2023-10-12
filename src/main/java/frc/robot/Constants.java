@@ -42,6 +42,11 @@ public final class Constants {
 
     public static final double MAX_SPEED = 1.0;
     public static final double MAX_SPEED_INTAKE = 1.0;
+
+    public static final int PNEUMATICS_FORWARD_CHANNEL = 0;
+    public static final int PNEUMATICS_REVERSE_CHANNEL = 1;
+
+    public static final int PNEUMATICS_ID = 21;
   }
 
   public static final class OIConstants {

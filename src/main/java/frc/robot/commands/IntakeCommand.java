@@ -5,9 +5,10 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.pneumatics.Pneumatics;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import static frc.robot.Constants.DriveConstants.*;
@@ -16,11 +17,13 @@ public class IntakeCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final Intake intake;
     private final CommandXboxController controller;
+    private final Pneumatics pneumatics;
 
-    public IntakeCommand(Intake intake, CommandXboxController controller) {
+    public IntakeCommand(Intake intake, CommandXboxController controller, Pneumatics pneumatics) {
         this.intake = intake;
         this.controller = controller;
-        addRequirements(intake);
+        this.pneumatics = pneumatics;
+        addRequirements(intake, pneumatics);
     }
 
     @Override
@@ -34,14 +37,19 @@ public class IntakeCommand extends CommandBase {
     private double getOutMaxSpeed() {
         /*
          * return ((-joystick.getRawAxis(3) + 1) / 2)
-         */ return MAX_SPEED_INTAKE
+         */
+        return MAX_SPEED_INTAKE
+                * (controller.a().getAsBoolean()
+                        || pneumatics.getSolenoidState() == DoubleSolenoid.Value.kForward ? 1.0 : 0.4)
                 * SmartDashboard.getNumber("Max Speed Outtake (dashboard)", 1.0);
     }
 
     private double getInMaxSpeed() {
         /*
          * return ((-joystick.getRawAxis(3) + 1) / 2)
-         */ return MAX_SPEED_INTAKE
+         */
+        return MAX_SPEED_INTAKE
+                * 0.4
                 * SmartDashboard.getNumber("Max Speed Intake (dashboard)", 1.0);
     }
 
@@ -53,6 +61,12 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void execute() {
         var controllerY = controller.getLeftY();
+        if (controller.y().getAsBoolean()) {
+            pneumatics.setSolenoid(DoubleSolenoid.Value.kForward);
+        }
+        else {
+            pneumatics.setSolenoid(DoubleSolenoid.Value.kReverse);
+        }
 
         SmartDashboard.putNumber("controller", controllerY);
 

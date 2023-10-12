@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.intake.*;
 import frc.robot.subsystems.imu.*;
+import frc.robot.subsystems.pneumatics.*;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -33,6 +34,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Intake intake;
   private final Imu imu;
+  private final Pneumatics pneumatics;
 
   // Controller
   private final CommandJoystick joystick = new CommandJoystick(DRIVER_CONTROLLER_PORT);
@@ -48,6 +50,7 @@ public class RobotContainer {
         drive = new Drive(new DriveIOSparkMax());
         intake = new Intake(new IntakeIOSPX());
         imu = new Imu(new ImuIOAHRS());
+        pneumatics = new Pneumatics(new PneumaticsIORevPH());
         // drive = new Drive(new DriveIOFalcon500());
         // flywheel = new Flywheel(new FlywheelIOFalcon500());
         break;
@@ -57,6 +60,7 @@ public class RobotContainer {
         drive = new Drive(new DriveIOSim());
         intake = new Intake(new IntakeIOSim());
         imu = new Imu(new ImuIOSim());
+        pneumatics = new Pneumatics(new PneumaticsIOSim());
         break;
 
       // Replayed robot, disable IO implementations
@@ -67,11 +71,13 @@ public class RobotContainer {
         });
         imu = new Imu(new ImuIO() {
         });
+        pneumatics = new Pneumatics(new PneumaticsIO() {
+        });
 
         break;
     }
 
-    drive.setDefaultCommand(new ParallelCommandGroup(new JoystickDriveCommand(drive, joystick), new IntakeCommand(intake, controller)));
+    drive.setDefaultCommand(new ParallelCommandGroup(new JoystickDriveCommand(drive, joystick), new IntakeCommand(intake, controller, pneumatics)));
   }
 
   /**
