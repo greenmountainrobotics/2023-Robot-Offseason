@@ -1,23 +1,25 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
 
-import frc.robot.commands.DriveAuto;
+import frc.robot.commands.*;
+import frc.robot.commands.auto.*;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.DriveIO;
-import frc.robot.subsystems.drive.DriveIOSparkMax;
-import frc.robot.subsystems.drive.DriveIOSim;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.subsystems.drive.*;
+import frc.robot.subsystems.intake.*;
+import frc.robot.subsystems.imu.*;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import static frc.robot.Constants.OIConstants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -29,13 +31,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  private final Intake intake;
+  private final Imu imu;
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
-
-  // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Choices");
-  private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel Speed", 1500.0);
+  private final CommandJoystick joystick = new CommandJoystick(DRIVER_CONTROLLER_PORT);
+  private final CommandXboxController controller = new CommandXboxController(OPERATOR_CONTROLLER_PORT);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -45,6 +46,8 @@ public class RobotContainer {
       // Real robot, instantiate hardware IO implementations
       case REAL:
         drive = new Drive(new DriveIOSparkMax());
+        intake = new Intake(new IntakeIOSPX());
+        imu = new Imu(new ImuIOAHRS());
         // drive = new Drive(new DriveIOFalcon500());
         // flywheel = new Flywheel(new FlywheelIOFalcon500());
         break;
@@ -52,32 +55,23 @@ public class RobotContainer {
       // Sim robot, instantiate physics sim IO implementations
       case SIM:
         drive = new Drive(new DriveIOSim());
+        intake = new Intake(new IntakeIOSim());
+        imu = new Imu(new ImuIOSim());
         break;
 
       // Replayed robot, disable IO implementations
       default:
         drive = new Drive(new DriveIO() {
         });
+        intake = new Intake(new IntakeIO() {
+        });
+        imu = new Imu(new ImuIO() {
+        });
 
         break;
     }
 
-    // Set up auto routines
-    autoChooser.addDefaultOption("Do Nothing", new InstantCommand());
-
-    // Configure the button bindings
-    configureButtonBindings();
-  }
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    drive.setDefaultCommand(
-        new RunCommand(() -> drive.driveArcade(-controller.getLeftY(), controller.getLeftX()), drive));
+    drive.setDefaultCommand(new ParallelCommandGroup(new JoystickDriveCommand(drive, joystick), new IntakeCommand(intake, controller)));
   }
 
   /**
@@ -86,6 +80,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new DriveAuto(drive); //}//autoChooser.get();
-  }
+      if (SmartDashboard.getBoolean("Auto", true))
+          return new AutoCommandGroup(imu, drive, intake, imu.getRoll());
+      else
+          //    return new AutoScoreCommand(intaksubsystem, robotDrive);
+          //return new NewBalanceCommand(imu, robotDrive, roll);
+          return new SequentialCommandGroup(new AutoScoreCommand(intake, drive), new RunCommand(() -> drive.drivePercent(0.3, 0.3), drive).withTimeout(3.5));  }
 }
