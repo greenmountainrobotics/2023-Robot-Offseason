@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.tankdrive;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;

@@ -9,7 +9,7 @@ import static frc.robot.Constants.AutoConstants.*;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.imu.Imu;
-import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.tankdrive.Drive;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

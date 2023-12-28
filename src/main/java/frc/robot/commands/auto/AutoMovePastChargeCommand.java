@@ -3,7 +3,8 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.imu.Imu;
-import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.tankdrive.Drive;
+
 import static frc.robot.Constants.AutoConstants.ANGLESTOP;
 
 
