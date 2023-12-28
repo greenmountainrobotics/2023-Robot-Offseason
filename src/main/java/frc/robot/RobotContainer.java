@@ -5,15 +5,7 @@
 
 package frc.robot;
 
-import frc.robot.commands.*;
-import frc.robot.commands.auto.*;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.subsystems.intake.*;
 import frc.robot.subsystems.tankdrive.*;
 import frc.robot.subsystems.imu.*;
 import edu.wpi.first.wpilibj2.command.*;
@@ -30,8 +22,7 @@ import static frc.robot.Constants.OIConstants.*;
  */
 public class RobotContainer {
   // Subsystems
-  private final Drive drive;
-  private final Intake intake;
+  private final TankDrive drive;
   private final Imu imu;
 
   // Controller
@@ -45,33 +36,25 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       // Real robot, instantiate hardware IO implementations
       case REAL:
-        drive = new Drive(new DriveIOSparkMax());
-        intake = new Intake(new IntakeIOSPX());
+        drive = new TankDrive(new TankDriveIOSparkMax());
         imu = new Imu(new ImuIOAHRS());
-        // drive = new Drive(new DriveIOFalcon500());
-        // flywheel = new Flywheel(new FlywheelIOFalcon500());
         break;
 
       // Sim robot, instantiate physics sim IO implementations
       case SIM:
-        drive = new Drive(new DriveIOSim());
-        intake = new Intake(new IntakeIOSim());
+        drive = new TankDrive(new TankDriveIOSim());
         imu = new Imu(new ImuIOSim());
         break;
 
       // Replayed robot, disable IO implementations
       default:
-        drive = new Drive(new DriveIO() {
-        });
-        intake = new Intake(new IntakeIO() {
+        drive = new TankDrive(new TankDriveIO() {
         });
         imu = new Imu(new ImuIO() {
         });
 
         break;
     }
-
-    drive.setDefaultCommand(new ParallelCommandGroup(new JoystickDriveCommand(drive, joystick), new IntakeCommand(intake, controller)));
   }
 
   /**
@@ -80,10 +63,11 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-      if (SmartDashboard.getBoolean("Auto", true))
-          return new AutoCommandGroup(imu, drive, intake, imu.getRoll());
-      else
-          //    return new AutoScoreCommand(intaksubsystem, robotDrive);
-          //return new NewBalanceCommand(imu, robotDrive, roll);
-          return new SequentialCommandGroup(new AutoScoreCommand(intake, drive), new RunCommand(() -> drive.drivePercent(0.3, 0.3), drive).withTimeout(3.5));  }
+      if (SmartDashboard.getBoolean("Auto", true)) {
+        return Commands.none();
+      }
+      else {
+        return Commands.none();
+      }
+  }
 }
