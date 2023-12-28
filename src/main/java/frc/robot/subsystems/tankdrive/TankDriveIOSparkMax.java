@@ -1,21 +1,17 @@
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.tankdrive;
 
-import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.math.util.Units;
 
 import static frc.robot.Constants.DriveConstants.*;
 
-public class DriveIOSparkMax implements DriveIO {
+public class TankDriveIOSparkMax implements TankDriveIO {
   private final CANSparkMax leftLeader;
   private final CANSparkMax rightLeader;
   private final CANSparkMax leftFollower;
   private final CANSparkMax rightFollower;
 
-  public DriveIOSparkMax() {
+  public TankDriveIOSparkMax() {
     leftLeader = new CANSparkMax(LEFT_MOTOR_1_ID, MotorType.kBrushed);
     rightLeader = new CANSparkMax(RIGHT_MOTOR_1_ID, MotorType.kBrushed);
     leftFollower = new CANSparkMax(LEFT_MOTOR_2_ID, MotorType.kBrushed);
@@ -41,7 +37,7 @@ public class DriveIOSparkMax implements DriveIO {
   }
 
   @Override
-  public void updateInputs(DriveIOInputs inputs) {
+  public void updateInputs(TankDriveIOInputs inputs) {
 
   }
 

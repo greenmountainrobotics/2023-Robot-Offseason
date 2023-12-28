@@ -7,16 +7,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.subsystems.tankdrive.TankDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.drive.Drive;
+
 import static frc.robot.Constants.DriveConstants.*;
 
 public class JoystickDriveCommand extends CommandBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-    private final Drive robotDrive;
+    private final TankDrive robotDrive;
     private final CommandJoystick joystick;
 
-    public JoystickDriveCommand(Drive robotDrive, CommandJoystick commandJoystick) {
+    public JoystickDriveCommand(TankDrive robotDrive, CommandJoystick commandJoystick) {
         this.robotDrive = robotDrive;
         joystick = commandJoystick;
         addRequirements(robotDrive);

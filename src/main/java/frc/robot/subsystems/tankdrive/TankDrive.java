@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.tankdrive;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -9,15 +9,15 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Drive extends SubsystemBase {
+public class TankDrive extends SubsystemBase {
   public static final double WHEEL_RADIUS_METERS = Units.inchesToMeters(3.0);
 
-  private final DriveIO io;
-  private final DriveIOInputsAutoLogged inputs = new DriveIOInputsAutoLogged();
+  private final TankDriveIO io;
+  private final TankDriveIOInputsAutoLogged inputs = new TankDriveIOInputsAutoLogged();
   private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(new Rotation2d(), 0.0, 0.0);
 
   /** Creates a new Drive. */
-  public Drive(DriveIO io) {
+  public TankDrive(TankDriveIO io) {
     this.io = io;
   }
 

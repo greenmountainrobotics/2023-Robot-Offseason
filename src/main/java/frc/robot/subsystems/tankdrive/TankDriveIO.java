@@ -1,10 +1,10 @@
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.tankdrive;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface DriveIO {
+public interface TankDriveIO {
   @AutoLog
-  public static class DriveIOInputs {
+  public static class TankDriveIOInputs {
     public double leftPositionRad = 0.0;
     public double leftVelocityRadPerSec = 0.0;
     public double rightPositionRad = 0.0;
@@ -13,7 +13,7 @@ public interface DriveIO {
   }
 
   /** Updates the set of loggable inputs. */
-  public default void updateInputs(DriveIOInputs inputs) {
+  public default void updateInputs(TankDriveIOInputs inputs) {
   }
 
   /** Run open loop at the specified voltage. */
